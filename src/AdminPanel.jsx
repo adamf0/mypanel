@@ -307,7 +307,7 @@ function AdminPanel() {
   }
 
   return (
-    <div className="bg-[#D9D9D9]">
+    <div className="bg-[#f5f5f5]">
       <div className="flex min-h-screen">
         <div
           className={cn(
