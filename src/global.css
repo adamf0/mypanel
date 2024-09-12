@@ -4,34 +4,57 @@
 
 @layer base {
     @font-face {
-      font-family: 'Inter';
-      /* font-style: normal; */
-      /* font-weight: 400;
+        font-family: 'Inter';
+        /* font-style: normal; */
+        /* font-weight: 400;
       font-display: swap; */
-      src: url(/src//assets/inter.ttf) format('ttf');
+        src: url(/src//assets/inter.ttf) format('ttf');
     }
-  }
+
+    @font-face {
+        font-family: 'FontAwesome5';
+        /* font-style: normal; */
+        /* font-weight: 400;
+      font-display: swap; */
+        src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css') format('css');
+    }
+}
 
 @layer components {
+    label::after {
+        font-family: "Font Awesome 5 Free";
+        content: '\f078';
+        /* Ikon caret down */
+        font-weight: bold;
+        font-size: 22px;
+        position: absolute;
+        right: 10px;
+        top: 6px;
+    }
+
     .menu-nav-selected {
         @apply w-full bg-[#77099D] text-white px-4 py-[14px] rounded-xl inline-flex;
     }
-    .menu-nav-text-selected {
-        @apply text-white font-bold font-[inter];
-    }
 
     .menu-nav {
-        @apply w-full bg-white text-[#2B2B2B] px-4 py-[14px] rounded-xl inline-flex;
-    }
-    .menu-nav-text {
-        @apply text-[#2B2B2B] font-bold font-[inter];
+        @apply w-full bg-white text-[#2B2B2B] font-bold font-[inter] px-4 py-[14px] rounded-xl inline-flex;
     }
 
-    .menu-nav:hover {
-        @apply w-full bg-[#f2e7f6] text-[#2B2B2B] px-4 py-[14px] rounded-xl inline-flex;
+    .menu-nav:hover,.menu-nav-selected2 {
+        @apply w-full bg-[#f2e7f6] text-[#2B2B2B] font-bold font-[inter] px-4 py-[14px] rounded-xl inline-flex;
     }
-    .menu-nav-text:hover {
-        @apply text-[#2B2B2B] font-bold font-[inter];
+
+
+    .item-menu-nav {
+        @apply w-full text-[#2B2B2B] font-bold font-[inter] rounded-xl inline-flex;
+    }
+
+    .item-menu-nav:hover,.item-menu-nav-selected  {
+        @apply w-full text-[#77099D] font-bold font-[inter] rounded-xl inline-flex;
+    }
+    
+    .card{
+        @apply w-full rounded-xl bg-white px-4 py-6 [box-shadow:0_1px_1px_#00000026,_0_2px_2px_#00000026,_0_4px_4px_#00000026,_0_8px_8px_#00000026]
     }
 }
 

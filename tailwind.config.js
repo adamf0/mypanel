@@ -22,9 +22,6 @@ export default {
         bounceOnce: 'bounceOnce 1s forwards',
       },
     },
-    screens: {
-      'ConectToApp-Break-420': '420px',
-    }
   },
   plugins: [],
 }
