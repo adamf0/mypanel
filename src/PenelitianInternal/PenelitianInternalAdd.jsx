@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { v4 as uuid } from "uuid";
 import { StepState } from "./StepState";
 import Error from "../Share/Erorr";
-import BreadCrumb from "./Breadcrumb";
+import BreadCrumb from "./BreadCrumb";
 import StackAvatars from "./StackAvatars";
 import ViewerFile from "./ViewerFile";
 
