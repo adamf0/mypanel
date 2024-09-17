@@ -10,28 +10,58 @@
       font-display: swap; */
         src: url(/src//assets/inter.ttf) format('ttf');
     }
-
-    @font-face {
-        font-family: 'FontAwesome5';
-        /* font-style: normal; */
-        /* font-weight: 400;
-      font-display: swap; */
-        src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css') format('css');
+    @keyframes slideIn {
+        0% {
+            opacity: 0%;
+            transform: translateX(-100%);
+        }
+        100% {
+            opacity: 100%;
+            transform: translateX(0%);
+        }
+    }
+    
+    @keyframes slideOut {
+        0% {
+            opacity: 100%;
+            transform: translateX(0%);
+        }
+        100% {
+            opacity: 0%;
+            transform: translateX(-100%);
+        }
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        box-sizing: content-box;
+    }
+    
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background-color: #f2e7f6;
+        border-radius: 20px;
+        border: 1px solid transparent;
+        background-clip: content-box;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #77099D;
     }
 }
 
 @layer components {
-    label::after {
-        font-family: "Font Awesome 5 Free";
-        content: '\f078';
-        /* Ikon caret down */
-        font-weight: bold;
-        font-size: 22px;
-        position: absolute;
-        right: 10px;
-        top: 6px;
-    }
-
     .menu-nav-selected {
         @apply w-full bg-[#77099D] text-white px-4 py-[14px] rounded-xl inline-flex;
     }
@@ -54,39 +84,32 @@
     }
     
     .card{
-        @apply w-full rounded-xl bg-white px-4 py-6 [box-shadow:0_1px_1px_#00000026,_0_2px_2px_#00000026,_0_4px_4px_#00000026,_0_8px_8px_#00000026]
+        @apply w-full rounded-xl bg-white px-[1cqw] py-[3cqh] [box-shadow:0_1px_1px_#00000026,_0_2px_2px_#00000026,_0_4px_4px_#00000026,_0_8px_8px_#00000026];
     }
+
+    /* .stepper-description{
+        font-size: clamp(.7rem, .7rem + 1vw, 1rem);
+        line-height: 2;
+        @apply whitespace-nowrap overflow-hidden overflow-ellipsis;
+    } */
 }
 
-
-* {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    box-sizing: content-box;
-}
-
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background-color: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: #f2e7f6;
-    border-radius: 20px;
-    border: 1px solid transparent;
-    background-clip: content-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: #77099D;
-}
 
 .clip-corner-box {
     clip-path: polygon(12px 0%, calc(100% - 12px) 0%, 100% 12px, 100% 100%, calc(100% - 12px) 100%, 12px 100%, 0 100%, 0 0)
+}
+.max-2line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
+.animate-slideIn {
+    animation: slideIn 0.5s forwards;
+}
+
+.animate-slideOut {
+    animation: slideOut 0.5s forwards;
 }

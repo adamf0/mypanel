@@ -7,7 +7,7 @@ import ConectToApp from "./ConectToApp.jsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AdminPanel from "./AdminPanel.jsx";
 import Dashboard from "./Dashboard/Dashboard.jsx";
-import PenelitianInternalList from "./PenelitianInternal/PenelitianInternalList.jsx";
+import PenelitianInternal from "./PenelitianInternal/PenelitianInternal.jsx";
 import PenelitianNasionalList from "./PenelitianNasional/PenelitianNasionalList.jsx";
 import PKMInternalList from "./PKMInternal/PKMInternalList.jsx";
 import PKMNasionalList from "./PKMNasional/PKMNasionalList.jsx";
@@ -22,9 +22,30 @@ createRoot(document.getElementById("root")).render(
         <Route element={<AdminPanel />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/penelitianInternal">
-            <Route index element={<PenelitianInternalList />} />
-            {/* <Route path="add" element={<PenelitianInternal />} /> */}
-            {/* <Route path="edit/:id" element={<PenelitianInternal />} /> */}
+            <Route
+              index
+              element={
+                <PenelitianInternal>
+                  <PenelitianInternal.List />
+                </PenelitianInternal>
+              }
+            />
+            <Route
+              path="/penelitianInternal/add"
+              element={
+                <PenelitianInternal>
+                  <PenelitianInternal.Add />
+                </PenelitianInternal>
+              }
+            />
+            <Route
+              path="/penelitianInternal/edit"
+              element={
+                <PenelitianInternal>
+                  <PenelitianInternal.Edit />
+                </PenelitianInternal>
+              }
+            />
           </Route>
           <Route path="/penelitianNasional">
             <Route index element={<PenelitianNasionalList />} />

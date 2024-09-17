@@ -1,13 +1,21 @@
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
+
 function PenelitianInternalList() {
+  const navigate = useNavigate();
+
   return (
     <>
-      <h5 className="text-[#77099D] font-extrabold font-[inter]">
-        Penelitian Internal
-      </h5>
-      <div className="card">asasasas</div>
+      <div className="card">Tabel Data</div>
       <div className="card h-[300px]"></div>
+      <button
+        className="w-16 [aspect-ratio:1/1] rounded-full bg-[#77099D] hover:bg-[#630483] text-[#fff] fixed bottom-[3rem] right-[3rem]"
+        onClick={() => navigate("/penelitianInternal/add")}
+      >
+        <FontAwesomeIcon icon={faPlus} size="lg" />
+      </button>
     </>
   );
 }
-
 export default PenelitianInternalList;

@@ -6,7 +6,7 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { cn } from "./utils/cn";
 import { v4 as uuid } from "uuid";
 import user from "./assets/user.png";
@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 function AdminPanel() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
   const [menuItems, setMenuItems] = useState([
     {
       url: "/dashboard",
@@ -202,6 +203,20 @@ function AdminPanel() {
     },
   ]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    if (windowSize >= 850) {
+      console.log(`width:${windowSize}`);
+      console.log(`drawer force close`);
+      setOpen(false);
+    }
+    return () => window.removeEventListener("resize", handleResize);
+  }, [windowSize]);
+
   function handlerOpenDrawer() {
     setOpen(!open);
   }
@@ -245,7 +260,7 @@ function AdminPanel() {
     return (
       <span
         key={uuid()}
-        className="text-[#707070] font-semibold font-[inter] text-[14px] whitespace-nowrap overflow-hidden overflow-ellipsis"
+        className="text-[#707070] font-semibold font-[inter] text-[0.875rem] whitespace-nowrap overflow-hidden overflow-ellipsis"
       >
         {text}
       </span>
@@ -282,7 +297,7 @@ function AdminPanel() {
           )}
         >
           <div className="w-full inline-flex justify-between items-center">
-            <div className="inline-flex gap-4">
+            <div className="max-w-[-webkit-fill-available] inline-flex gap-4">
               <FontAwesomeIcon icon={icon} size="lg" />
               <p className="whitespace-nowrap overflow-hidden overflow-ellipsis">
                 {text}
@@ -294,7 +309,7 @@ function AdminPanel() {
             />
           </div>
           {selected && child.length > 0 && (
-            <div className="inline-flex flex-col gap-4 min-w-[-webkit-fill-available]">
+            <div className="w-full inline-flex flex-col gap-4">
               <hr className="border-[.8px] border-[solid] border-[#707070]" />
               {child.map((item) =>
                 subMenu(item.selected, item.icon, item.text, item.url)
@@ -306,26 +321,37 @@ function AdminPanel() {
     );
   }
 
+  function getStyleDrawer() {
+    if (windowSize >= 850) {
+      return "";
+    } else {
+      return open ? "animate-slideIn" : "animate-slideOut";
+    }
+  }
+
   return (
     <div className="bg-[#f5f5f5]">
       <div className="flex min-h-screen">
         <div
           className={cn(
-            open ? "" : "hidden",
-            "fixed w-[22rem] sm:relative px-4 py-5 bg-white sm:flex sm:flex-col sm:gap-10"
+            getStyleDrawer(),
+            "fixed min-h-max z-2 overflow-y-scroll w-[21rem] [@media(min-width:53.125rem)]:relative px-4 py-5 bg-white [@media(min-width:53.125rem)]:flex [@media(min-width:53.125rem)]:flex-col [@media(min-width:53.125rem)]:gap-8"
           )}
         >
-          <div className="inline-flex items-center gap-4">
+          <div className="inline-flex items-center gap-4 w-[-webkit-fill-available]">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Logo-Resmi_Unpak.png"
               alt="logo"
               className="w-10"
             />
-            <span className="text-black font-semibold font-[inter] text-[14px] min-w-[-webkit-fill-available]">
+            <span className="text-black font-semibold font-[inter] text-[0.875rem] grow">
               SIPAKSI
             </span>
-            <button onClick={() => handlerOpenDrawer()}>
-              <FontAwesomeIcon icon={faXmark} className="relative sm:hidden" />
+            <button id="closeDrawer" onClick={() => handlerOpenDrawer()}>
+              <FontAwesomeIcon
+                icon={faXmark}
+                className="relative [@media(min-width:53.125rem)]:hidden"
+              />
             </button>
           </div>
 
@@ -351,27 +377,35 @@ function AdminPanel() {
             })}
           </div>
         </div>
+        <div
+          className={cn(
+            open ? "" : "hidden",
+            "fixed h-screen w-[-webkit-fill-available] z-1 [@media(min-width:53.125rem)]:hidden bg-[#f5f5f5] opacity-[.6]"
+          )}
+          onClick={() => handlerOpenDrawer()}
+        ></div>
 
-        <div className="w-full sm:w-[calc(100%-22rem)] h-full inline-flex flex-col">
-          <nav className="bg-white flex justify-between px-6 py-5">
+        <div className="w-full [@media(min-width:53.125rem)]:w-[calc(100%-21rem)] h-full inline-flex flex-col">
+          <nav className="bg-white flex flex-wrap justify-between px-6 py-5">
             <button onClick={() => handlerOpenDrawer()}>
               <FontAwesomeIcon
                 icon={faBars}
                 size="lg"
-                className="block sm:hidden"
+                className="block [@media(min-width:53.125rem)]:hidden"
               />
             </button>
-            <ul className="inline-flex flex-wrap items-center gap-[.5rem]">
-              <li className="break-all">
+            <ul className="inline-flex flex-wrap grow items-center gap-[.5rem]">
+              <li className="break-all grow text-right">
                 Selamat datang,
-                <b>Admin</b>
+                <b> Admin Lorem ipsum dolor</b>
+                {/*nama harus potong manual, di css masih belum bisa*/}
               </li>
               <li className="">
                 <img src={user} alt="" />
               </li>
             </ul>
           </nav>
-          <div className="flex flex-col gap-4 p-6">
+          <div className="flex flex-col gap-4 p-[min(2%,1.5rem)]">
             <Outlet />
           </div>
         </div>

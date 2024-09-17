@@ -1,0 +1,178 @@
+import React, { useState, useMemo } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  add,
+  sub,
+  startOfMonth,
+  getDaysInMonth,
+  getDay,
+  format,
+  setDate,
+  isToday,
+} from "date-fns";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { cn } from "../utils/cn";
+
+function PenelitianInternalStep1() {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [tanggalPengajuan, setTanggalPengajuan] = useState(null);
+
+  const getDaysArray = useMemo(() => {
+    const startOfCurrentMonth = startOfMonth(currentDate);
+    const daysInCurrentMonth = getDaysInMonth(currentDate);
+
+    // Previous month calculations
+    const startDayOfMonth = getDay(startOfCurrentMonth); // 0 (Sunday) to 6 (Saturday)
+    const previousMonth = sub(currentDate, { months: 1 });
+    const daysInPreviousMonth = getDaysInMonth(previousMonth);
+    const lastDaysOfPrevMonth = Array.from(
+      { length: startDayOfMonth },
+      (_, index) => daysInPreviousMonth - startDayOfMonth + 1 + index
+    );
+
+    // Current month days
+    const currentMonthDays = Array.from(
+      { length: daysInCurrentMonth },
+      (_, index) => index + 1
+    );
+
+    // Next month days to fill grid
+    const totalDisplayedDays =
+      lastDaysOfPrevMonth.length + currentMonthDays.length;
+    const daysNeededFromNextMonth = 35 - totalDisplayedDays;
+    const firstDaysOfNextMonth = Array.from(
+      { length: daysNeededFromNextMonth },
+      (_, index) => index + 1
+    );
+
+    return {
+      days: [
+        ...lastDaysOfPrevMonth,
+        ...currentMonthDays,
+        ...firstDaysOfNextMonth,
+      ],
+      lastDaysOfPrevMonthLength: lastDaysOfPrevMonth.length,
+      currentMonthDaysLength: currentMonthDays.length,
+      previousMonth,
+      currentMonth: currentDate,
+      nextMonth: add(currentDate, { months: 1 }),
+    };
+  }, [currentDate]);
+
+  const handlePrevMonth = () =>
+    setCurrentDate((prev) => sub(prev, { months: 1 }));
+  const handleNextMonth = () =>
+    setCurrentDate((prev) => add(prev, { months: 1 }));
+
+  const handleDateClick = (day, month) => {
+    const clickedDate = setDate(month, day);
+    setTanggalPengajuan(format(clickedDate, "yyyy-MM-dd"));
+  };
+
+  const getCellStyle = (index, lastDaysLength, currentMonthLength) => {
+    if (index === 0) return "rounded-tl-[8px]";
+    if (index === 6) return "rounded-tr-[8px]";
+    if (index === 28) return "rounded-bl-[8px]";
+    if (index === 34) return "rounded-br-[8px]";
+    return "";
+  };
+
+  const {
+    days,
+    lastDaysOfPrevMonthLength,
+    currentMonthDaysLength,
+    previousMonth,
+    currentMonth,
+    nextMonth,
+  } = getDaysArray;
+
+  return (
+    <div className="card h-auto flex flex-col">
+      <div className="grid grid-cols-[repeat(auto-fit,_minmax(200px,1fr))] gap-2">
+        <div className="">asas</div>
+        <div className="flex flex-col gap-4">
+          <label className="block text-sm font-medium leading-6 text-[#2b2b2b]">
+            Tanggal Pengajuan
+          </label>
+          <div className="grid grid-cols-7 gap-1 text-center font-light px-[1cqw]">
+            {" "}
+            {/*auto-rows-[1fr]*/}
+            <span
+              onClick={handlePrevMonth}
+              className="cursor-pointer text-[#676767] hover:text-black"
+            >
+              <FontAwesomeIcon icon={faChevronLeft} size="md" />
+            </span>
+            <span className="col-span-5 font-light">
+              {format(currentMonth, "MMMM yyyy")}
+            </span>
+            <span
+              onClick={handleNextMonth}
+              className="cursor-pointer text-[#676767] hover:text-black"
+            >
+              <FontAwesomeIcon icon={faChevronRight} size="md" />
+            </span>
+            {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
+              <span key={`${day}-${index}`} className="text-[#6b7280]">
+                {day}
+              </span>
+            ))}
+            {days.map((day, index) => {
+              const isPrevMonth = index < lastDaysOfPrevMonthLength;
+              const isNextMonth =
+                index >= lastDaysOfPrevMonthLength + currentMonthDaysLength;
+              const month = isPrevMonth
+                ? previousMonth
+                : isNextMonth
+                ? nextMonth
+                : currentMonth;
+
+              const isTodayDate = isToday(setDate(month, day));
+              const isSelectedDate =
+                tanggalPengajuan == format(setDate(month, day), "yyyy-MM-dd");
+
+              return (
+                <span
+                  key={index}
+                  className={cn(
+                    getCellStyle(
+                      index,
+                      lastDaysOfPrevMonthLength,
+                      currentMonthDaysLength
+                    ),
+                    "p-[min(5%,.5rem)]",
+                    isPrevMonth || isNextMonth ? "text-[#6b7280]" : "",
+                    isSelectedDate ? "bg-[#77099D] text-white rounded-xl" : ""
+                  )}
+                  onClick={() => {
+                    if (!(isPrevMonth || isNextMonth)) {
+                      handleDateClick(day, month);
+                    }
+                  }}
+                >
+                  {isTodayDate ? (
+                    <div
+                      className={cn(
+                        isSelectedDate ? "text-white" : "text-[#77099D]",
+                        "font-semibold"
+                      )}
+                    >
+                      {day}
+                    </div>
+                  ) : (
+                    day
+                  )}
+                </span>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default PenelitianInternalStep1;
