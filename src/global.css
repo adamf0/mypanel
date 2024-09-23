@@ -4,11 +4,11 @@
 
 @layer base {
     @font-face {
-        font-family: 'Inter';
-        /* font-style: normal; */
-        /* font-weight: 400;
-      font-display: swap; */
-        src: url(/src//assets/inter.ttf) format('ttf');
+        font-family: 'inter';
+        font-style: normal;
+        font-weight: 300;
+        font-display: swap;
+        src: url(/src/assets/inter.ttf) format('ttf');
     }
     @keyframes slideIn {
         0% {
@@ -31,12 +31,37 @@
             transform: translateX(-100%);
         }
     }
+
+    @keyframes slideUp {
+        0% {
+            opacity: 0%;
+            transform: translateY(-100%);
+        }
+        100% {
+            opacity: 100%;
+            transform: translateY(0%);
+        }
+    }
+    
+    @keyframes slideDown {
+        0% {
+            opacity: 100%;
+            transform: translateY(0%);
+        }
+        100% {
+            opacity: 0%;
+            transform: translateY(-100%);
+        }
+    }
     
     * {
         margin: 0;
         padding: 0;
     }
     
+    *{
+        font-family: 'inter';
+    }
     body {
         box-sizing: content-box;
     }
@@ -112,4 +137,10 @@
 
 .animate-slideOut {
     animation: slideOut 0.5s forwards;
+}
+.padding_24{
+    padding: 0 min(24px, 5vw);
+}
+.padding_24_all{
+    padding: 24px min(24px, 5vw) 52px min(24px, 5vw);
 }
